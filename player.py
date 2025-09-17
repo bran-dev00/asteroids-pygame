@@ -38,7 +38,6 @@ class Player(CircleShape):
         self.cooldown -= dt
 
     def shoot(self,dt):
-        print(self.cooldown)
         if self.cooldown > 0:
             return
         else:
