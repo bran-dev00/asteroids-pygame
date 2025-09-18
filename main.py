@@ -1,4 +1,7 @@
 import pygame
+import pygame.freetype
+import os
+import sys
 from constants import *
 from asteroid import Asteroid 
 from asteroid_field import AsteroidField
@@ -26,17 +29,23 @@ def main():
 
     dt = 0 #Delta-Time
 
+    # Score
+    score = 0
+
+    # score_surface = pygame.surface.Surface((10,10))
+    score_font = pygame.freetype.SysFont("Comic Sans",18)
+    
     while(True):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         updatable.update(dt)
         screen.fill("black")
-        
         for asteroid in asteroids:
             for shot in shots:
                 if shot.collision(asteroid):
                     shot.kill()
+                    score += 1
                     asteroid.split()
 
             if player.collision(asteroid):
@@ -46,6 +55,9 @@ def main():
         for item in drawable:
             item.draw(screen)
 
+        
+        score_font_text = score_font.render(f"SCORE:{score}", (200, 226, 232))
+        screen.blit(score_font_text[0], (SCORE_TEXT_POS[0],SCORE_TEXT_POS[1]))
         pygame.display.flip()
         dt = clock.tick(60) / 1000
         
